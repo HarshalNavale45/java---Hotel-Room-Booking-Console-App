@@ -1,0 +1,3 @@
+bookingId,guestName,guestPhone,guestEmail,roomNumber,checkInDate,checkOutDate,numberOfGuests,bookingStatus,roomCharge,tax,totalAmount
+BK-10001,Alice Smith,1234567890,alice@example.com,101,2026-07-29,2026-08-02,1,COMPLETED,400.00,40.00,440.00
+BK-10002,Bob Miller,9876543210,bob@example.com,101,2026-08-02,2026-08-04,1,CANCELLED,200.00,20.00,220.00

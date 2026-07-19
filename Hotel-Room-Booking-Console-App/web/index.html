@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="StayEase Property Management System - Real-time hotel desk client featuring rooms search, reservations ledgers, and invoice generation.">
+    <title>StayEase PMS - Desk Client</title>
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Main Style -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- 1. SIDE NAVIGATION BAR -->
+        <aside class="sidebar">
+            <div class="sidebar-logo">
+                <i class="fa-solid fa-hotel logo-icon"></i>
+                <div class="logo-text">
+                    <span class="logo-title">STAYEASE PMS</span>
+                    <span class="logo-subtitle">Property Management</span>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="#" class="menu-item active" id="menu-dashboard" data-tab="tab-dashboard">
+                    <i class="fa-solid fa-chart-line"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#" class="menu-item" id="menu-search-book" data-tab="tab-search-book">
+                    <i class="fa-solid fa-calendar-plus"></i>
+                    <span>Search & Book</span>
+                </a>
+                <a href="#" class="menu-item" id="menu-manage-ledger" data-tab="tab-manage-ledger">
+                    <i class="fa-solid fa-address-book"></i>
+                    <span>Manage Ledger</span>
+                </a>
+                <a href="#" class="menu-item" id="menu-inventory" data-tab="tab-inventory">
+                    <i class="fa-solid fa-list-check"></i>
+                    <span>Room Inventory</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-user-tie"></i>
+                    </div>
+                    <div class="user-info">
+                        <span class="user-name">Desk Staff</span>
+                        <span class="user-role">Administrator</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- 2. MAIN CONTENT AREA -->
+        <main class="main-content">
+            <!-- Header bar -->
+            <header class="top-header">
+                <div class="header-search">
+                    <h1 id="page-title">Dashboard Overview</h1>
+                </div>
+                <div class="header-widgets">
+                    <div class="widget-date">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <span id="current-system-date">Loading date...</span>
+                    </div>
+                    <div class="widget-status">
+                        <span class="status-indicator"></span>
+                        <span>System Online</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- 3. PANELS SECTION -->
+            <div class="panel-container">
+                
+                <!-- TAB 1: DASHBOARD PANEL -->
+                <section id="tab-dashboard" class="tab-panel active-panel">
+                    <!-- Metrics Row -->
+                    <div class="metrics-grid">
+                        <div class="metric-card bg-gradient-blue">
+                            <div class="metric-info">
+                                <span class="metric-title">TOTAL CAPACITY</span>
+                                <span class="metric-value" id="dash-total-rooms">20 Rooms</span>
+                                <span class="metric-desc">Master property inventory</span>
+                            </div>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-key"></i>
+                            </div>
+                        </div>
+                        <div class="metric-card bg-gradient-teal">
+                            <div class="metric-info">
+                                <span class="metric-title">TODAY'S VACANT ROOMS</span>
+                                <span class="metric-value" id="dash-vacant">20 Rooms</span>
+                                <span class="metric-desc">Available for check-in</span>
+                            </div>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-door-open"></i>
+                            </div>
+                        </div>
+                        <div class="metric-card bg-gradient-indigo">
+                            <div class="metric-info">
+                                <span class="metric-title">ACTIVE RESERVATIONS</span>
+                                <span class="metric-value" id="dash-active">0 Bookings</span>
+                                <span class="metric-desc">Confirmed and in-house stays</span>
+                            </div>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                        </div>
+                        <div class="metric-card bg-gradient-purple">
+                            <div class="metric-info">
+                                <span class="metric-title">TOTAL EST. REVENUE</span>
+                                <span class="metric-value" id="dash-revenue">₹0.00</span>
+                                <span class="metric-desc">Including taxes & surcharges</span>
+                            </div>
+                            <div class="metric-icon">
+                                <i class="fa-solid fa-sack-dollar"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Grid -->
+                    <div class="charts-grid">
+                        <div class="chart-container-box card-box">
+                            <div class="card-header-row">
+                                <h3 class="card-box-title"><i class="fa-solid fa-chart-simple"></i> Occupancy Insights</h3>
+                                <span class="badge badge-teal">Live</span>
+                            </div>
+                            <div class="chart-canvas-wrapper">
+                                <!-- Interactive SVG Chart -->
+                                <svg id="occupancy-svg" viewBox="0 0 500 200" class="svg-chart">
+                                    <defs>
+                                        <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                                            <stop offset="0%" stop-color="#0d9488" stop-opacity="0.3"/>
+                                            <stop offset="100%" stop-color="#0d9488" stop-opacity="0.0"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path id="chart-area-path" d="" fill="url(#chartGrad)"/>
+                                    <path id="chart-line-path" d="" fill="none" stroke="#0d9488" stroke-width="3"/>
+                                    <g id="chart-grid-lines"></g>
+                                    <g id="chart-points"></g>
+                                    <g id="chart-labels"></g>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="chart-container-box card-box">
+                            <div class="card-header-row">
+                                <h3 class="card-box-title"><i class="fa-solid fa-pie-chart"></i> Room Allocations</h3>
+                                <span class="badge badge-slate">Categories</span>
+                            </div>
+                            <div class="allocation-bars" id="allocation-stats">
+                                <!-- Allocation bars dynamically generated -->
+                                <div class="allocation-bar-item">Loading allocations...</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Stays Ledger -->
+                    <div class="recent-stays-box card-box">
+                        <h3 class="card-box-title"><i class="fa-solid fa-history"></i> Recent Booking Transactions</h3>
+                        <div class="table-container">
+                            <table class="data-table" id="tbl-recent-bookings">
+                                <thead>
+                                    <tr>
+                                        <th>Booking ID</th>
+                                        <th>Guest Name</th>
+                                        <th>Room #</th>
+                                        <th>Check-In</th>
+                                        <th>Check-Out</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td colspan="7" class="empty-state">No transaction records found.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 2: SEARCH & BOOK PANEL -->
+                <section id="tab-search-book" class="tab-panel">
+                    <div class="search-form-card card-box">
+                        <h3 class="card-box-title"><i class="fa-solid fa-search"></i> Check Room Availability</h3>
+                        <form id="frm-availability" class="form-horizontal">
+                            <div class="input-group-element">
+                                <label for="search-check-in">Check-in Date</label>
+                                <input type="date" id="search-check-in" required>
+                            </div>
+                            <div class="input-group-element">
+                                <label for="search-check-out">Check-out Date</label>
+                                <input type="date" id="search-check-out" required>
+                            </div>
+                            <div class="input-group-element">
+                                <label for="search-room-type">Room Category</label>
+                                <select id="search-room-type">
+                                    <option value="SINGLE">Single (₹1,500.00)</option>
+                                    <option value="DOUBLE">Double (₹2,800.00)</option>
+                                    <option value="DELUXE">Deluxe (₹4,500.00)</option>
+                                    <option value="SUITE">Suite (₹8,000.00)</option>
+                                </select>
+                            </div>
+                            <div class="input-group-element align-end">
+                                <button type="submit" class="btn btn-teal w-full">
+                                    <i class="fa-solid fa-search"></i> Find Rooms
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Available Grid Header -->
+                    <div class="results-heading-row" id="results-heading" style="display: none;">
+                        <h3>Available Room Options</h3>
+                        <span id="results-counter" class="badge badge-teal">0 Available</span>
+                    </div>
+
+                    <!-- Rooms Cards Grid -->
+                    <div class="rooms-grid" id="search-results-grid">
+                        <div class="empty-state-card">
+                            <i class="fa-solid fa-calendar-check icon-large"></i>
+                            <p>Choose checking dates and click search to discover vacant rooms.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 3: MANAGE LEDGER PANEL -->
+                <section id="tab-manage-ledger" class="tab-panel">
+                    <div class="ledger-header-row card-box">
+                        <div class="search-bar-wrapper">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input type="text" id="ledger-search-input" placeholder="Search by Guest Name or Booking ID...">
+                        </div>
+                        <div class="filter-actions">
+                            <button id="btn-ledger-filter" class="btn btn-teal">
+                                <i class="fa-solid fa-search"></i> Search
+                            </button>
+                            <button id="btn-ledger-clear" class="btn btn-slate">
+                                <i class="fa-solid fa-undo"></i> Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Booking Ledger Table -->
+                    <div class="ledger-table-card card-box">
+                        <div class="table-container">
+                            <table class="data-table" id="tbl-ledger">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Guest Name</th>
+                                        <th>Contact</th>
+                                        <th>Room</th>
+                                        <th>Check-In</th>
+                                        <th>Check-Out</th>
+                                        <th>Nights</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Ledger list dynamically populated -->
+                                    <tr>
+                                        <td colspan="10" class="empty-state">No transaction history.</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TAB 4: ROOM INVENTORY PANEL -->
+                <section id="tab-inventory" class="tab-panel">
+                    <div class="inventory-card card-box">
+                        <h3 class="card-box-title"><i class="fa-solid fa-door-closed"></i> Hotel Room Inventory Specifications</h3>
+                        <div class="table-container">
+                            <table class="data-table" id="tbl-inventory">
+                                <thead>
+                                    <tr>
+                                        <th>Room Number</th>
+                                        <th>Category</th>
+                                        <th>Rate Per Night</th>
+                                        <th>Max Occupants</th>
+                                        <th>Amenities Included</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Static table generated by javascript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- 4. MODALS & DRAWERS -->
+    
+    <!-- A. Booking Form Slide-out Drawer -->
+    <div id="booking-drawer" class="drawer-overlay">
+        <div class="drawer-content">
+            <div class="drawer-header">
+                <h3>Create New Reservation</h3>
+                <button type="button" class="btn-close-drawer" id="btn-close-booking-drawer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <form id="frm-create-booking" class="drawer-form">
+                <input type="hidden" id="book-room-number">
+                <input type="hidden" id="book-check-in">
+                <input type="hidden" id="book-check-out">
+
+                <div class="drawer-summary-card">
+                    <div class="summary-item">
+                        <span class="summary-label">Room Allocation:</span>
+                        <span class="summary-value" id="summary-room-num">Room ---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Category / Rate:</span>
+                        <span class="summary-value" id="summary-room-type">---</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Duration:</span>
+                        <span class="summary-value" id="summary-dates">---</span>
+                    </div>
+                </div>
+
+                <div class="form-group-block">
+                    <label for="guest-name">Guest Full Name</label>
+                    <input type="text" id="guest-name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group-block">
+                    <label for="guest-phone">Mobile Phone (10 digits)</label>
+                    <input type="tel" id="guest-phone" pattern="\d{10}" placeholder="9876543210" required>
+                </div>
+                <div class="form-group-block">
+                    <label for="guest-email">Email Address</label>
+                    <input type="email" id="guest-email" placeholder="john@example.com" required>
+                </div>
+                <div class="form-group-block">
+                    <label for="guest-count">Number of Guests</label>
+                    <select id="guest-count">
+                        <option value="1">1 Guest</option>
+                    </select>
+                </div>
+
+                <!-- Live Billing Calculator -->
+                <div class="drawer-billing-calc">
+                    <h4 class="billing-header">Estimated Charging Summary</h4>
+                    <div class="calc-row">
+                        <span>Room Subtotal:</span>
+                        <span id="calc-subtotal">₹0.00</span>
+                    </div>
+                    <div class="calc-row">
+                        <span>Hotel Surcharge & Taxes (10%):</span>
+                        <span id="calc-taxes">₹0.00</span>
+                    </div>
+                    <hr class="calc-divider">
+                    <div class="calc-row total-row">
+                        <span>Grand Total:</span>
+                        <span id="calc-total">₹0.00</span>
+                    </div>
+                </div>
+
+                <div class="drawer-actions">
+                    <button type="button" class="btn btn-slate" id="btn-cancel-booking-drawer">Cancel</button>
+                    <button type="submit" class="btn btn-teal">Confirm Booking</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- B. Invoice Receipt Modal -->
+    <div id="invoice-modal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>StayEase Invoicing Portal</h3>
+                <button type="button" class="btn-close-modal" id="btn-close-invoice">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="invoice-receipt-content">
+                <!-- Invoice printed here dynamically -->
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-slate" id="btn-print-invoice">
+                    <i class="fa-solid fa-print"></i> Print Invoice
+                </button>
+                <button type="button" class="btn btn-teal" id="btn-close-invoice-ok">Done</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. SYSTEM TOAST NOTIFICATIONS -->
+    <div class="toast-wrapper" id="toast-wrapper"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
